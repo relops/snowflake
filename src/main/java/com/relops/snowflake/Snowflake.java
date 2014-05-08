@@ -1,5 +1,8 @@
 package com.relops.snowflake;
 
+/**
+ * A snowflake is a source of k-ordered unique 64-bit integers.
+ */
 public class Snowflake {
 
   public static final int NODE_SHIFT = 10;
@@ -13,6 +16,13 @@ public class Snowflake {
 
   private int node;
 
+  /**
+   * A snowflake is designed to operate as a singleton instance within the context of a node.
+   * If you deploy different nodes, supplying a unique node id will guarantee the uniqueness
+   * of ids generated concurrently on different nodes.
+   *
+   * @param node This is an id you use to differentiate different nodes.
+   */
   public Snowflake(int node) {
     if (node < 0 || node > MAX_NODE) {
       throw new IllegalArgumentException(String.format("node must be between %s and %s", 0, MAX_NODE));
@@ -20,6 +30,12 @@ public class Snowflake {
     this.node = node;
   }
 
+  /**
+   * Generates a k-ordered unique 64-bit integer. Subsequent invocations of this method will produce
+   * increasing integer values.
+   *
+   * @return The next 64-bit integer.
+   */
   public long next() {
 
     long currentTime = System.currentTimeMillis();
